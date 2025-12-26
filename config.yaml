@@ -1,0 +1,7 @@
+data_ingestion:
+  raw_data_path: "notebook/paddydataset.csv"
+  artifacts_dir: "artifacts"
+
+model_params:
+  test_size: 0.2
+  random_state: 42
