@@ -1,7 +1,50 @@
-data_ingestion:
-  raw_data_path: "notebook/paddydataset.csv"
-  artifacts_dir: "artifacts"
+# Configuration du projet ML
 
-model_params:
-  test_size: 0.2
+# Ingestion des données
+data_ingestion:
+  raw_data_path: 'notebook/paddydataset.csv'  # Chemin vers vos données brutes
+  train_test_split_ratio: 0.2
   random_state: 42
+
+# Transformation des données
+data_transformation:
+  target_column: 'Paddy yield(in Kg)'  # Nom EXACT de votre colonne cible
+  
+  # Paramètres de nettoyage
+  cleaning:
+    missing_threshold: 0.3  # Supprimer colonnes avec >30% de valeurs manquantes
+    correlation_threshold: 0.85  # Supprimer features avec corrélation >0.85
+  
+  # Paramètres de sélection de features (Lasso)
+  feature_selection:
+    alpha: 0.05  # Coefficient de régularisation (plus élevé = plus de convergence)
+    max_iter: 100000  # Nombre max d'itérations
+    tolerance: 0.01  # Tolérance de convergence
+    threshold: 'median'  # Sélectionner features au-dessus de la médiane
+
+# Entraînement du modèle
+model_training:
+  random_state: 42
+  min_r2_score: 0.6  # Score R2 minimum acceptable
+  
+  # Cross-validation
+  cv_folds: 3
+  
+  # Gridsearch
+  n_jobs: -1  # Utiliser tous les CPU disponibles
+  verbose: 0  # 0 = silencieux, 1 = progression, 2 = détaillé
+
+# Chemins des artefacts
+artifacts:
+  base_dir: 'artifacts'
+  train_data: 'artifacts/train.csv'
+  test_data: 'artifacts/test.csv'
+  raw_data: 'artifacts/data.csv'
+  preprocessor: 'artifacts/preprocessor.pkl'
+  model: 'artifacts/model.pkl'
+  selected_features: 'artifacts/selected_features.npy'
+
+# Logging
+logging:
+  level: 'INFO'  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
