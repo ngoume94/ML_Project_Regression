@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prédiction de Rendement - Riz Paddy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #667eea;
+            text-decoration: none;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .section-title {
+            color: #667eea;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        input, select {
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        .result-container {
+            margin-top: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .result-value {
+            color: #667eea;
+            font-size: 2.5em;
+            font-weight: bold;
+        }
+
+        .error-container {
+            margin-top: 20px;
+            padding: 20px;
+            background: #fee;
+            border-left: 4px solid #f44;
+            border-radius: 8px;
+            color: #c33;
+        }
+
+        .info-note {
+            background: #e7f3ff;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/" class="back-link">← Retour</a>
+            <h1> Prédiction de Rendement de Riz Paddy</h1>
+        </div>
+
+        <div class="info-note">
+            <strong> Note:</strong> Les champs non visibles utilisent des valeurs par défaut moyennes basées sur les données historiques.
+        </div>
+
+        <form action="/predictdata" method="post">
+            <!-- Section 1: Informations Principales -->
+            <div class="form-section">
+                <div class="section-title"> Informations Générales</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="agriblock"> Bloc Agricole</label>
+                        <select name="agriblock" id="agriblock" required>
+                            <option value="">Sélectionnez...</option>
+                            <option value="Cuddalore">Cuddalore</option>
+                            <option value="Kurinjipadi">Kurinjipadi</option>
+                            <option value="Panruti">Panruti</option>
+                            <option value="Kallakurichi">Kallakurichi</option>
+                            <option value="Sankarapuram">Sankarapuram</option>
+                            <option value="Chinnasalem">Chinnasalem</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="variety"> Variété</label>
+                        <select name="variety" id="variety" required>
+                            <option value="">Sélectionnez...</option>
+                            <option value="CO_43">CO 43</option>
+                            <option value="ponmani">Ponmani</option>
+                            <option value="delux ponni">Delux Ponni</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="soil_type"> Type de Sol</label>
+                        <select name="soil_type" id="soil_type" required>
+                            <option value="">Sélectionnez...</option>
+                            <option value="alluvial">Alluvial</option>
+                            <option value="clay">Argileux (Clay)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nursery"> Pépinière</label>
+                        <select name="nursery" id="nursery" required>
+                            <option value="">Sélectionnez...</option>
+                            <option value="dry">Sèche</option>
+                            <option value="wet">Humide</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="hectares"> Surface (Hectares)</label>
+                        <input type="number" name="hectares" id="hectares" 
+                               value="6" step="0.5" min="1" max="50" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="trash"> Résidus (bundles)</label>
+                        <input type="number" name="trash" id="trash" 
+                               value="570" step="10" min="0" max="1000" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Champs cachés avec valeurs par défaut -->
+            <input type="hidden" name="seedrate" value="150">
+            <input type="hidden" name="lp_mainfield" value="75.0">
+            <input type="hidden" name="nursery_area" value="120">
+            <input type="hidden" name="lp_nurseryarea" value="6">
+            <input type="hidden" name="dap_20days" value="240">
+            <input type="hidden" name="weed_thiobencarb" value="600">
+            <input type="hidden" name="urea_40days" value="160">
+            <input type="hidden" name="potash_50days" value="96">
+            <input type="hidden" name="micronutrients_70days" value="8">
+            <input type="hidden" name="pest_60day" value="400">
+            <input type="hidden" name="rain_30d" value="250.0">
+            <input type="hidden" name="rain_30dai" value="25.0">
+            <input type="hidden" name="rain_30_50d" value="300.0">
+            <input type="hidden" name="rain_30_50dai" value="30.0">
+            <input type="hidden" name="rain_51_70d" value="350.0">
+            <input type="hidden" name="rain_51_70ai" value="35.0">
+            <input type="hidden" name="rain_71_105d" value="400.0">
+            <input type="hidden" name="rain_71_105dai" value="40.0">
+            <input type="hidden" name="min_temp_d1_d30" value="22.0">
+            <input type="hidden" name="max_temp_d1_d30" value="34.0">
+            <input type="hidden" name="min_temp_d31_d60" value="23.0">
+            <input type="hidden" name="max_temp_d31_d60" value="35.0">
+            <input type="hidden" name="min_temp_d61_d90" value="24.0">
+            <input type="hidden" name="max_temp_d61_d90" value="36.0">
+            <input type="hidden" name="min_temp_d91_d120" value="22.0">
+            <input type="hidden" name="max_temp_d91_d120" value="33.0">
+            <input type="hidden" name="wind_speed_d1_d30" value="10">
+            <input type="hidden" name="wind_speed_d31_d60" value="8">
+            <input type="hidden" name="wind_speed_d61_d90" value="6">
+            <input type="hidden" name="wind_speed_d91_d120" value="10">
+            <input type="hidden" name="wind_dir_d1_d30" value="SW">
+            <input type="hidden" name="wind_dir_d31_d60" value="W">
+            <input type="hidden" name="wind_dir_d61_d90" value="NNW">
+            <input type="hidden" name="wind_dir_d91_d120" value="WSW">
+            <input type="hidden" name="humidity_d1_d30" value="72.0">
+            <input type="hidden" name="humidity_d31_d60" value="78">
+            <input type="hidden" name="humidity_d61_d90" value="88">
+            <input type="hidden" name="humidity_d91_d120" value="85">
+
+            <button type="submit" class="submit-btn">
+                 Prédire le Rendement
+            </button>
+        </form>
+
+        {% if results %}
+        <div class="result-container">
+            <div class="result-label">Rendement Prédit</div>
+            <div class="result-value">{{ results }}</div>
+            <div class="result-unit">kg de riz Paddy</div>
+        </div>
+        {% endif %}
+
+        {% if error %}
+        <div class="error-container">
+            <strong> Erreur :</strong> {{ error }}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
